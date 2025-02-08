@@ -88,13 +88,14 @@ document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
 // Function to create the Add Quote Form dynamically
 function createAddQuoteForm() {
+    const quotecreation = document.getElementById("createquote")
     const formContainer = document.createElement("div");
     formContainer.innerHTML = `
         <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
         <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
         <button onclick="addNewQuote()">Add Quote</button>
     `;
-    document.body.appendChild(formContainer);
+    quotecreation.appendChild(formContainer);
 }
 
 // Function to add a new quote
