@@ -11,12 +11,12 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
 let selectedCategory = localStorage.getItem("selectedCategory") || "all";
 
 // Function to save quotes to local storage
-function saveQuotes() {
+function saveQuotesToLocalStorage() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
 // Function to populate category dropdown dynamically
-function populateCategories() {
+function populateCategoryDropdown() {
     const categoryFilter = document.getElementById("categoryFilter");
     categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
 
@@ -33,14 +33,14 @@ function populateCategories() {
 }
 
 // Function to filter quotes based on selected category
-function filterQuotes() {
+function filterQuotesByCategory() {
     selectedCategory = document.getElementById("categoryFilter").value;
     localStorage.setItem("selectedCategory", selectedCategory);
-    displayFilteredQuotes();
+    displayQuotes();
 }
 
-// Function to display filtered quotes
-function displayFilteredQuotes() {
+// Function to display quotes
+function displayQuotes() {
     const quoteDisplay = document.getElementById("quoteDisplay");
     quoteDisplay.innerHTML = "";
 
@@ -64,8 +64,8 @@ function displayFilteredQuotes() {
 }
 
 // Function to show a new random quote
-function showNewQuote() {
-    const filteredQuotes = "all"
+function showRandomQuote() {
+    const filteredQuotes = selectedCategory === "all"
         ? quotes
         : quotes.filter(quote => quote.category === selectedCategory);
 
@@ -84,10 +84,10 @@ function showNewQuote() {
 }
 
 // Attach event listener to "Show New Quote" button
-document.getElementById("newQuote").addEventListener("click", showNewQuote);
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
 // Function to add a new quote
-function addQuote() {
+function addNewQuote() {
     const newQuoteText = document.getElementById("newQuoteText").value.trim();
     const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
@@ -99,17 +99,17 @@ function addQuote() {
     const newQuote = { id: Date.now(), text: newQuoteText, category: newQuoteCategory };
 
     quotes.push(newQuote);
-    saveQuotes();
+    saveQuotesToLocalStorage();
 
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
 
-    populateCategories();
-    displayFilteredQuotes();
+    populateCategoryDropdown();
+    displayQuotes();
 }
 
 // Function to export quotes to JSON
-function exportQuotes() {
+function exportQuotesToJson() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(quotes));
     const downloadAnchor = document.createElement("a");
     downloadAnchor.setAttribute("href", dataStr);
@@ -120,7 +120,7 @@ function exportQuotes() {
 }
 
 // Function to import quotes from JSON file
-function importFromJsonFile(event) {
+function importQuotesFromJsonFile(event) {
     const fileReader = new FileReader();
     fileReader.onload = function(event) {
         try {
@@ -128,10 +128,10 @@ function importFromJsonFile(event) {
             if (!Array.isArray(importedQuotes)) throw new Error("Invalid format");
 
             quotes.push(...importedQuotes);
-            saveQuotes();
+            saveQuotesToLocalStorage();
             alert("Quotes imported successfully!");
-            populateCategories();
-            displayFilteredQuotes();
+            populateCategoryDropdown();
+            displayQuotes();
         } catch (error) {
             alert("Error importing quotes. Please use a valid JSON file.");
         }
@@ -141,6 +141,6 @@ function importFromJsonFile(event) {
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
-    populateCategories();
-    displayFilteredQuotes();
+    populateCategoryDropdown();
+    displayQuotes();
 });
