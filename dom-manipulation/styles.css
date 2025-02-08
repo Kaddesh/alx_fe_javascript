@@ -1,0 +1,91 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rebeccapurple;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Page Title */
+  h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  
+  /* Category Filter */
+  label {
+    font-size: 16px;
+    font-weight: bold;
+    color: cornsilk;
+  }
+  
+  select {
+    padding: 8px;
+    font-size: 16px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  /* Quote Display */
+  #quoteDisplay {
+    margin: 20px auto;
+    padding: 15px;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Quote Styling */
+  blockquote {
+    font-size: 18px;
+    font-style: italic;
+    color: #555;
+    margin: 10px 0;
+  }
+  
+  /* Buttons */
+  button {
+    background-color: #3e0cab;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Input Fields */
+  input {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Quote Addition Section */
+  div {
+    margin: 20px 0;
+  }
+  
+  /* File Upload */
+  input[type="file"] {
+    border: none;
+    font-size: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #fff;
+  }
+  
