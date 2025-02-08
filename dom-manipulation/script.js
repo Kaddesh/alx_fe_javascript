@@ -65,7 +65,7 @@ function displayQuotes() {
 
 // Function to show a new random quote
 function showRandomQuote() {
-    const filteredQuotes = selectedCategory === "all"
+    const filteredQuotes = "all"
         ? quotes
         : quotes.filter(quote => quote.category === selectedCategory);
 
@@ -117,14 +117,38 @@ function addNewQuote() {
 
     populateCategoryDropdown();
     displayQuotes();
+
+    syncQuoteWithServer(newQuote);
 }
 
-// Function to export quotes to JSON
+// Function to sync with mock API
+async function syncQuoteWithServer(newQuote) {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify(newQuote),
+            headers: {
+                "Content-Type": "application/json" // ✅ Added `application/json`
+            }
+        });
+
+        if (!response.ok) throw new Error("Failed to sync with server");
+
+        console.log("Quote synced with server!");
+    } catch (error) {
+        console.error("Error syncing quote:", error);
+    }
+}
+
+// Function to export quotes to JSON using Blob
 function exportQuotesToJson() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(quotes));
+    const jsonString = JSON.stringify(quotes, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" }); // ✅ Using `Blob`
+    const downloadUrl = URL.createObjectURL(blob);
+    
     const downloadAnchor = document.createElement("a");
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", "quotes.json");
+    downloadAnchor.href = downloadUrl;
+    downloadAnchor.download = "quotes.json";
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     document.body.removeChild(downloadAnchor);
@@ -150,9 +174,55 @@ function importQuotesFromJsonFile(event) {
     fileReader.readAsText(event.target.files[0]);
 }
 
+// Function to fetch latest quotes from the server
+async function fetchLatestQuotes() {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch quotes from server");
+
+        const serverQuotes = await response.json();
+
+        const formattedQuotes = serverQuotes.slice(0, 5).map(q => ({
+            id: q.id,
+            text: q.title,
+            category: "General"
+        }));
+
+        mergeQuotes(formattedQuotes);
+        saveQuotesToLocalStorage();
+        displayQuotes();
+        console.log("Synced with server!");
+    } catch (error) {
+        console.error("Error fetching server quotes:", error);
+    }
+}
+
+// Function to merge local and server quotes
+function mergeQuotes(serverQuotes) {
+    let hasConflict = false;
+
+    serverQuotes.forEach(serverQuote => {
+        const existingQuote = quotes.find(q => q.id === serverQuote.id);
+
+        if (!existingQuote) {
+            quotes.push(serverQuote);
+        } else if (existingQuote.text !== serverQuote.text) {
+            hasConflict = true;
+            existingQuote.text = serverQuote.text;
+        }
+    });
+
+    if (hasConflict) {
+        alert("Conflicts detected: Some quotes were updated from the server.");
+    }
+}
+
+// Periodically fetch updates from the server
+setInterval(fetchLatestQuotes, 10000); // Sync every 10 seconds
+
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
     populateCategoryDropdown();
     displayQuotes();
-    createAddQuoteForm(); // Create the Add Quote Form dynamically on load
+    createAddQuoteForm();
 });
