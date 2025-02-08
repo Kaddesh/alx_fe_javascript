@@ -118,11 +118,11 @@ function addNewQuote() {
     populateCategories(); 
     displayQuotes();
 
-    syncQuoteWithServer(newQuote);
+    syncQuotes(newQuote);
 }
 
 // Function to sync with mock API
-async function syncQuoteWithServer(newQuote) {
+async function syncQuotes(newQuote) {
     try {
         const response = await fetch(API_URL, {
             method: "POST",
