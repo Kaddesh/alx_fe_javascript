@@ -65,7 +65,7 @@ function displayQuotes() {
 
 // Function to show a new random quote
 function showRandomQuote() {
-    const filteredQuotes = "all"
+    const filteredQuotes = selectedCategory === "all"
         ? quotes
         : quotes.filter(quote => quote.category === selectedCategory);
 
@@ -85,6 +85,17 @@ function showRandomQuote() {
 
 // Attach event listener to "Show New Quote" button
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+
+// Function to create the Add Quote Form dynamically
+function createAddQuoteForm() {
+    const formContainer = document.createElement("div");
+    formContainer.innerHTML = `
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+        <button onclick="addNewQuote()">Add Quote</button>
+    `;
+    document.body.appendChild(formContainer);
+}
 
 // Function to add a new quote
 function addNewQuote() {
@@ -143,4 +154,5 @@ function importQuotesFromJsonFile(event) {
 document.addEventListener("DOMContentLoaded", () => {
     populateCategoryDropdown();
     displayQuotes();
+    createAddQuoteForm(); // Create the Add Quote Form dynamically on load
 });
