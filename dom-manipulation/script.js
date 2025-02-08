@@ -134,7 +134,7 @@ async function syncQuotes(newQuote) {
 
         if (!response.ok) throw new Error("Failed to sync with server");
 
-        console.log("Quote synced with server!");
+        console.log("Quotes synced with server!"); 
     } catch (error) {
         console.error("Error syncing quote:", error);
     }
