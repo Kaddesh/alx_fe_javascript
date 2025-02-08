@@ -16,7 +16,7 @@ function saveQuotesToLocalStorage() {
 }
 
 // Function to populate categories dropdown dynamically
-function populateCategories() {  // ✅ Fixed function name
+function populateCategories() {  
     const categoryFilter = document.getElementById("categoryFilter");
     categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
 
@@ -115,7 +115,7 @@ function addNewQuote() {
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
 
-    populateCategories(); // ✅ Fixed function call
+    populateCategories(); 
     displayQuotes();
 
     syncQuoteWithServer(newQuote);
@@ -143,7 +143,7 @@ async function syncQuoteWithServer(newQuote) {
 // Function to export quotes to JSON using Blob
 function exportQuotesToJson() {
     const jsonString = JSON.stringify(quotes, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" }); // ✅ Using `Blob`
+    const blob = new Blob([jsonString], { type: "application/json" }); 
     const downloadUrl = URL.createObjectURL(blob);
     
     const downloadAnchor = document.createElement("a");
@@ -174,8 +174,8 @@ function importQuotesFromJsonFile(event) {
     fileReader.readAsText(event.target.files[0]);
 }
 
-// Function to fetch latest quotes from the server
-async function fetchLatestQuotes() {
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() { // ✅ Fixed function name
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch quotes from server");
@@ -218,11 +218,11 @@ function mergeQuotes(serverQuotes) {
 }
 
 // Periodically fetch updates from the server
-setInterval(fetchLatestQuotes, 10000); // Sync every 10 seconds
+setInterval(fetchQuotesFromServer, 10000); // ✅ Fixed function call
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
-    populateCategories(); // ✅ Fixed function call
+    populateCategories(); 
     displayQuotes();
     createAddQuoteForm();
 });
