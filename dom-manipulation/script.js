@@ -65,7 +65,7 @@ function displayQuotes() {
 
 // Function to show a new random quote
 function showRandomQuote() {
-    const filteredQuotes = selectedCategory === "all"
+    const filteredQuotes = "all"
         ? quotes
         : quotes.filter(quote => quote.category === selectedCategory);
 
