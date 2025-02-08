@@ -15,8 +15,8 @@ function saveQuotesToLocalStorage() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// Function to populate category dropdown dynamically
-function populateCategoryDropdown() {
+// Function to populate categories dropdown dynamically
+function populateCategories() {  // ✅ Fixed function name
     const categoryFilter = document.getElementById("categoryFilter");
     categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
 
@@ -65,7 +65,7 @@ function displayQuotes() {
 
 // Function to show a new random quote
 function showRandomQuote() {
-    const filteredQuotes = "all"
+    const filteredQuotes = selectedCategory === "all"
         ? quotes
         : quotes.filter(quote => quote.category === selectedCategory);
 
@@ -115,7 +115,7 @@ function addNewQuote() {
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
 
-    populateCategoryDropdown();
+    populateCategories(); // ✅ Fixed function call
     displayQuotes();
 
     syncQuoteWithServer(newQuote);
@@ -128,7 +128,7 @@ async function syncQuoteWithServer(newQuote) {
             method: "POST",
             body: JSON.stringify(newQuote),
             headers: {
-                "Content-Type": "application/json" // ✅ Added `application/json`
+                "Content-Type": "application/json"
             }
         });
 
@@ -165,7 +165,7 @@ function importQuotesFromJsonFile(event) {
             quotes.push(...importedQuotes);
             saveQuotesToLocalStorage();
             alert("Quotes imported successfully!");
-            populateCategoryDropdown();
+            populateCategories();
             displayQuotes();
         } catch (error) {
             alert("Error importing quotes. Please use a valid JSON file.");
@@ -222,7 +222,7 @@ setInterval(fetchLatestQuotes, 10000); // Sync every 10 seconds
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
-    populateCategoryDropdown();
+    populateCategories(); // ✅ Fixed function call
     displayQuotes();
     createAddQuoteForm();
 });
